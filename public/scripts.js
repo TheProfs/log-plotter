@@ -1,10 +1,6 @@
 'use strict'
 
-toastr.options.timeOut = 1000
-const throttleDuration = 2 * 1000
-const throttle = throttleDebounce.throttle
-
-const charter = {
+const plotter = {
   chart: null,
 
   init: function() {
@@ -41,13 +37,11 @@ const charter = {
             type: 'time',
             time: { unit: 'minute' }
           },
-
           y: { display: false }
         },
 
         plugins: {
           legend: { labels: { usePointStyle: true } },
-
           tooltip: {
             callbacks: {
               label: context => {
@@ -86,19 +80,21 @@ const charter = {
               onZoomComplete: async ({ chart }) => {
                 const ticks = this.chart.scales.x.ticks
 
-                if (!ticks.length) return
+                if (!ticks.length)
+                  return
 
                 const first = ticks[0].value
                 const last = ticks[ticks.length - 1].value
 
-                if (!last) return
+                if (!last)
+                  return
 
                 this.update({
                   start_from: new Date(first),
                   end_at: new Date(last)
                 })
 
-                $('#reset-zoom-btn').show()
+                document.querySelector('#reset-btn').classList.remove('hidden')
               }
             }
           }
@@ -107,9 +103,9 @@ const charter = {
         onClick: e => {
           this.chart.getElementsAtEventForMode(e, 'nearest', {
             intersect: true
-          }, true).forEach(point => {
-            const item = this.chart.data.datasets[point.datasetIndex]
-              .data[point.index]
+          }, true).forEach(p => {
+
+            const item = this.chart.data.datasets[p.datasetIndex].data[p.index]
 
             console.log(item.event)
 
@@ -122,10 +118,10 @@ const charter = {
     return this
   },
 
-  update: throttle(throttleDuration,
+  update: throttleDebounce.throttle(2000,
     async function({ start_from, end_at }) {
       try {
-        $('#loading').show()
+        document.querySelector('#loading').classList.remove('hidden')
 
         const params = new URLSearchParams({
           start_from: start_from.getTime(),
@@ -133,29 +129,30 @@ const charter = {
         })
 
         this.chart.data.datasets = await fetch('/datasets?' + params, {
-          headers: {
-            'Accept': 'application/json'
-          }
+          headers: { 'Accept': 'application/json' }
         })
         .then(res => {
           if (res.status !== 200)
             throw res.statusText
 
-          return res
+          return res.json()
         })
-        .then(res => res.json())
 
         this.chart.update(0)
 
-        $('#period').show()
-        $('#start-lbl').text(start_from.toLocaleDateString())
-        $('#end-lbl').text(start_from.toLocaleDateString())
+        document.querySelector('#period')
+          .classList.remove('hidden')
+        document.querySelector('#start-lbl')
+          .innerText = start_from.toLocaleDateString()
+        document.querySelector('#end-lbl')
+          .innerText = end_at.toLocaleDateString()
 
       } catch (err) {
         toastr.error(err)
         console.error(err)
+
       } finally {
-        $('#loading').hide()
+        document.querySelector('#loading').classList.add('hidden')
       }
 
   }, { atBegin: true }),

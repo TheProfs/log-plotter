@@ -4,7 +4,6 @@
     <title>Log Visualiser</title>
 
     <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"></link>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@chgibb/css-spinners@2.2.1/css/spinners.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
@@ -31,7 +30,7 @@
         <li> <span> Click Legend Items</span> to hide them </li>
       </ul>
       <button
-        id="reset-zoom-btn"
+        id="reset-btn"
         class="hidden"
         title="Reset to initial state"
         type="button">
@@ -45,6 +44,7 @@
       </p>
       <span>
     </div>
+    <script> $('.controls').draggable({ containment: 'document' }) </script>
 
     <div id="loading" class="loading-indicator-container hidden">
       <h5> Fetching data for time period </h5>
@@ -57,15 +57,16 @@
   </body>
 
   <script>
+    'use strict'
+
+    toastr.options.timeOut = 1000
+
     window.onload = () => {
-      $('.controls').draggable({ containment: 'document' })
+      plotter.create().init()
 
-      $('#reset-zoom-btn').on('click', e => {
-        charter.reset()
-        $('#reset-zoom-btn').hide()
+      document.querySelector('#reset-btn').addEventListener('click', e => {
+        plotter.reset() && e.target.classList.toggle('hidden')
       })
-
-      charter.create().init()
     }
   </script>
 </html>

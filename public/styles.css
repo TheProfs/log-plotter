@@ -1,15 +1,11 @@
 body {
   padding: 0 !important;
   margin: 0 !important;
-  font-family: "Lato", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+  font-family: sans-serif;
   border-radius: 4px;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none !important; }
 
 .chart-container {
   position: fixed;
@@ -35,17 +31,17 @@ body {
   color: #fafafa;
   pointer-events: none;
   z-index: 1;
-}
 
-.loading-indicator-container h5,
-.loading-indicator {
-  display: flex;
-  justify-content: space-between;
-}
+  h5,
+  .loading-indicator {
+    display: flex;
+    justify-content: space-between;
+  }
 
-.loading-indicator {
-  scale: 0.35;
-  background: #333 !important;
+  .loading-indicator {
+    scale: 0.35;
+    background: #333 !important;
+  }
 }
 
 .controls {
@@ -56,22 +52,20 @@ body {
   background: rgba(0,0,0,0.7);
   cursor: move;
   z-index: 2;
-}
 
-.controls ul, p {
-  display: block;
-  padding: 6px 8px;
-  color: #fefefe;
-  font-size: 0.75em;
-}
+  ul, p {
+    display: block;
+    padding: 6px 8px;
+    color: #fefefe;
+    font-size: 0.75em;
+  }
 
-.controls ul li {
-  margin-bottom: 12px;
-}
+  ul li { margin-bottom: 12px; }
 
-.controls ul li span {
-  margin-right: 8px;
-  padding: 2px 6px;
-  border: 1px solid #999;
-  border-radius: 4px;
+  ul li span {
+    margin-right: 8px;
+    padding: 2px 6px;
+    border: 1px solid #999;
+    border-radius: 4px;
+  }
 }
