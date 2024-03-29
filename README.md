@@ -9,7 +9,9 @@ that happen across separate, distributed services logging using [Papertrail][pt]
 
 Use it to debug pesky issues with no clear cause.
 
-<img alt="Running time plot showing a suspected cause of high-frequency disconnections" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTU1NjR4czUwaTY4ZWllNjA1YmRxM2w2andwdWF5eWM5bXNjZ2Z2cCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kbpkqUhZyjDptIYfAc/source.gif" width="488" height="224">
+<p align="center">
+  <img alt="Running time plot showing a suspected cause of high-frequency disconnections" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTU1NjR4czUwaTY4ZWllNjA1YmRxM2w2andwdWF5eWM5bXNjZ2Z2cCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kbpkqUhZyjDptIYfAc/source.gif">
+</p>
 
 > In the above image we traced mass WebSocket disconnections,
 seen next to the cyan point, to a simple infrastructure platform rule that moves
