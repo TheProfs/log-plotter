@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Log Visualiser</title>
+
+    <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"></link>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@chgibb/css-spinners@2.2.1/css/spinners.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="public/styles.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/throttle-debounce@5.0.0/umd/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
+    <script src="public/scripts.js"></script>
+  </head>
+
+  <body>
+    <div class="controls" title="Drag to reposition">
+      <ul>
+        <li> <span> Click + Drag </span> to time travel </li>
+        <li> <span> Mousewheel in/out </span> to zoom in</li>
+        <li> <span> Click Point </span> to log event </li>
+        <li> <span> Click Legend Items</span> to hide them </li>
+      </ul>
+      <button
+        id="reset-zoom-btn"
+        class="hidden"
+        title="Reset to initial state"
+        type="button">
+          Reset
+      </button>
+      <p id="period" class="hidden">
+        Viewing:
+        <strong id="start-lbl"></strong>
+          -
+        <strong id="end-lbl"></strong>
+      </p>
+      <span>
+    </div>
+
+    <div id="loading" class="loading-indicator-container hidden">
+      <h5> Fetching data for time period </h5>
+      <div class="loading-indicator wobblebar-loader"> Loading... </div>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="chart"></canvas>
+    </div>
+  </body>
+
+  <script>
+    window.onload = () => {
+      $('.controls').draggable({ containment: 'document' })
+
+      $('#reset-zoom-btn').on('click', e => {
+        charter.reset()
+        $('#reset-zoom-btn').hide()
+      })
+
+      charter.create().init()
+    }
+  </script>
+</html>

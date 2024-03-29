@@ -1,0 +1,25 @@
+{
+  "name": "sockets-debug",
+  "version": "0.1.0",
+  "description": "Debug bitpaper-ws socket.io disconnect errors",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev": "npx nodemon app.js",
+    "start": "node app.js"
+  },
+  "author": "@nicholaswmin",
+  "engines": {
+    "node": "20.9.0"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.2.0",
+    "node-fetch": "^2.7.0",
+    "uniqolor": "^1.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
