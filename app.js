@@ -17,7 +17,7 @@ app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, 'public/index.html')))
 
 app.get('/datasets',
-  rateLimit({ windowMs: 1000, limit: 1 }),
+  rateLimit({ windowMs: 1000, limit: 2 }),
   async (req, res, next) => {
 
   try {
@@ -71,6 +71,4 @@ app.use((err, req, res, next) => {
   })
 })
 
-app.listen(port, () => {
-  console.log(`Serving on localhost:${port}`)
-})
+app.listen(port, () => console.log(`Serving on localhost:${port}`))
