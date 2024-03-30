@@ -2,6 +2,8 @@
 
 const plotter = {
   chart: null,
+  interactionDebounceDuration: 1250, // for pan/zoom
+  nextFetchDelay: 1000, // i.e: 1000 = only 1 fetch per second allowed
 
   init: function() {
     const start_from = new Date()
@@ -10,7 +12,7 @@ const plotter = {
     start_from.setHours(start_from.getHours() - 12)
     end_at.setHours(end_at.getHours() + 12)
 
-    this.update({ start_from, end_at })
+    this.fetchDatasetForRange({ start_from, end_at })
 
     return this
   },
@@ -54,20 +56,8 @@ const plotter = {
             pan: {
               mode: 'x',
               enabled: true,
-              onPanComplete: async ({ chart }) => {
-                const ticks = this.chart.scales.x.ticks
-
-                if (!ticks.length) return
-
-                const first = ticks[0].value
-                const last = ticks[ticks.length - 1].value
-
-                if (!last) return
-
-                this.update({
-                  start_from: new Date(first),
-                  end_at: new Date(last)
-                })
+              onPanComplete: ({ chart }) => {
+                this.fetchDatasetForXAxisBounds()
               }
             },
 
@@ -77,24 +67,11 @@ const plotter = {
                 speed: 0.075
               },
               mode: 'x',
-              onZoomComplete: async ({ chart }) => {
-                const ticks = this.chart.scales.x.ticks
+              onZoomComplete: ({ chart }) => {
+                this.fetchDatasetForXAxisBounds()
 
-                if (!ticks.length)
-                  return
-
-                const first = ticks[0].value
-                const last = ticks[ticks.length - 1].value
-
-                if (!last)
-                  return
-
-                this.update({
-                  start_from: new Date(first),
-                  end_at: new Date(last)
-                })
-
-                document.querySelector('#reset-btn').classList.remove('hidden')
+                document.querySelector('#reset-btn')
+                  .classList.remove('hidden')
               }
             }
           }
@@ -118,44 +95,71 @@ const plotter = {
     return this
   },
 
-  update: throttleDebounce.throttle(2000,
-    async function({ start_from, end_at }) {
-      try {
-        document.querySelector('#loading').classList.remove('hidden')
+  fetchDatasetForXAxisBounds: function() {
+    this._fetchDatasetForXAxisBounds = this._fetchDatasetForXAxisBounds ||
+      throttleDebounce.debounce(
+        this.interactionDebounceDuration,
+        function() {
+          const ticks = this.chart.scales.x.ticks
 
-        const params = new URLSearchParams({
-          start_from: start_from.getTime(),
-          end_at: end_at.getTime()
-        })
+          if (!ticks.length)
+            return
 
-        this.chart.data.datasets = await fetch('/datasets?' + params, {
-          headers: { 'Accept': 'application/json' }
-        })
-        .then(res => {
-          if (res.status !== 200)
-            throw res.statusText
+          const first = ticks[0].value
+          const last = ticks[ticks.length - 1].value
 
-          return res.json()
-        })
+          return this.fetchDatasetForRange({
+            start_from: new Date(first),
+            end_at: new Date(last)
+          })
+      })
 
-        this.chart.update(0)
+      this._fetchDatasetForXAxisBounds()
+  },
 
-        document.querySelector('#period')
-          .classList.remove('hidden')
-        document.querySelector('#start-lbl')
-          .innerText = start_from.toLocaleDateString()
-        document.querySelector('#end-lbl')
-          .innerText = end_at.toLocaleDateString()
+  fetchDatasetForRange: function({ start_from, end_at }) {
+    this._fetchDatasetForRange = this._fetchDatasetForRange ||
+      throttleDebounce.throttle(
+        this.nextFetchDelay,
+        async function({ start_from, end_at }) {
+          try {
+            document.querySelector('#loading').classList.remove('hidden')
 
-      } catch (err) {
-        toastr.error(err)
-        console.error(err)
+            const params = new URLSearchParams({
+              start_from: start_from.getTime(),
+              end_at: end_at.getTime()
+            })
 
-      } finally {
-        document.querySelector('#loading').classList.add('hidden')
-      }
+            this.chart.data.datasets = await fetch('/datasets?' + params, {
+              headers: { 'Accept': 'application/json' }
+            })
+            .then(res => {
+              if (res.status !== 200)
+                throw res.statusText
 
-  }, { atBegin: true }),
+              return res.json()
+            })
+
+            this.chart.update(0)
+
+            document.querySelector('#period')
+              .classList.remove('hidden')
+            document.querySelector('#start-lbl')
+              .innerText = start_from.toLocaleDateString()
+            document.querySelector('#end-lbl')
+              .innerText = end_at.toLocaleDateString()
+
+          } catch (err) {
+            toastr.error(err)
+            console.error(err)
+
+          } finally {
+            document.querySelector('#loading').classList.add('hidden')
+          }
+      }, { atBegin: true })
+
+    this._fetchDatasetForRange({ start_from, end_at })
+  },
 
   reset: function() {
     this.chart.resetZoom()
