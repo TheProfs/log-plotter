@@ -38,14 +38,18 @@ $ npm install
 
 Edit `config.yaml` to add the log message keywords you wish to visualise.   
 
-Assuming you:
+Assuming you have 2 apps running on Heroku, with the Papertrail add-on attached:
 
-- `console.log('redis-connect-error', err)` & `console.log('fetch-error')`
-   in a Papertrail app, called `billing-service`.
-- `console.log('GET /invoices timeout', err)` in another Papertrail app, called
-  `invoicing-service`.
+- Invoicing App, called **billing-app**.
+  - You `console.log('redis-connect-error', err)`
+  - You `console.log('fetch-error', err)`
+- Billing App, called `invoicing-app`.
+  - You `console.log('GET /invoices timeout', err)`
 
-Declare those 3 events and the 2 apps they are logged in, in `config.yaml`:
+You want to see when and how many times those `console.log` calls occured in
+a time period.   
+
+Declare those 2 apps and the events you're interested in, in `config.yaml`:
 
 ```yaml
 ---
@@ -66,14 +70,24 @@ apps:
     color: blue
 ```
 
-Where:
+App parameters:
 
 | Event | Type | Required? | Description |
 |---|---|---|---|
 | `app.name` | String | Required | Name of the Papertrail app that logs this log/event. |
+| `app.token` | String | Required | Papertrail API token for that app. |
 | `event.name` | String | Required | A subset of the string you `console.log()`.    If you log `console.log(redis-socket-error)`,  you can just declare `"socket-error" here and it will still be picked up. |
 | `event.color` | String:Hex color | Optional.  Defaults to random. | Use this color when painting the time plot point. |
 | `event.size` | Number | Required | Use this radius for the time plot point. |
+
+Event
+
+| Event | Type | Required? | Description |
+|---|---|---|---|
+| `event.name` | String | Required | A subset of the string you `console.log()`.    If you log `console.log(redis-socket-error)`,  you can just declare `"socket-error" here and it will still be picked up. |
+| `event.color` | String:Hex color | Optional.  Defaults to random. | Use this color when painting the time plot point. |
+| `event.size` | Number | Required | Use this radius for the time plot point. |
+
 
 
 ### Run the visualiser
