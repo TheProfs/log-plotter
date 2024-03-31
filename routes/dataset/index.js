@@ -19,6 +19,7 @@ const config = yaml.parse(
     'utf8')
 )
 
+// Papertrail has a very strict and low rate-limit!
 router.get('/',
   validate.query(validate.schemas.datasets.get),
   rateLimit({ windowMs: 1000, limit: 2 }),

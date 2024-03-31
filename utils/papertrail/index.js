@@ -2,8 +2,6 @@
 
 const fetch = require('node-fetch')
 
-// Papertrail has a very strict and low rate-limit!
-// See: https://www.papertrail.com/help/search-api/
 module.exports = {
   search: ({ token, start, end, query }) => {
     const q = new URLSearchParams({
