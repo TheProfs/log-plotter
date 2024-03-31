@@ -1,15 +1,16 @@
+---
 apps:
-- name: billing-app
-  token: <papertrail-app-token>
-  events:
-  - query: redis-reconnect-error
-    size: 10
-  - query: a-log-i-logged-using-console.log!
-    size: 5
-    color: teal
-- name: invoicing-app
-  token: <papertrail-app-token>
-  events:
-  - query: GET invoice timeout
-    size: 1
-    color: blue
+  - name: billing-app
+    token: <papertrail-app-token>
+    events:
+      - query: redis-connect-error
+        size: 10
+      - query: fetch-error
+        size: 5
+        color: teal
+  - name: invoicing-app
+    token: <papertrail-app-token>
+    events:
+      - query: GET /invoices timeout
+        size: 1
+        color: blue
