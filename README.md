@@ -78,7 +78,7 @@ apps:
 | Event | Type | Required? | Description |
 |---|---|---|---|
 | `app.name` | String | Required | Name of the Papertrail app that logs this log/event. |
-| `app.token` | String | Required | Papertrail API token for that app. |
+| `app.token` | String | Required | Papertrail API token for that app. Tokens with underscores (`_`) are assumed to be environmental variables, looked up like so: `process.env[app.token]`  |
 
 #### Event parameters:
 
@@ -87,7 +87,6 @@ apps:
 | `event.query` | String | Required | A subset of the string you `console.log()`.    If you log `console.log(redis-socket-error)`,  you can just declare `"socket-error"` here and it will still be picked up. |
 | `event.color` | String:Hex color | Optional.  Defaults to random. | Use this color when painting the time plot point. |
 | `event.size` | Number | Required | Use this radius for the time plot point. |
-
 
 
 ### Run the visualiser

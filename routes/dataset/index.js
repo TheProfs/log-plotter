@@ -1,22 +1,15 @@
 'use strict'
 
-const fs = require('fs')
-const path = require('path')
-const yaml = require('yaml')
 const express = require('express')
 const rateLimit = require('express-rate-limit')
 const uniqolor = require('uniqolor')
 const hasher = require('hash-index')
 
+const config = require('../../utils/config-loader')
 const validate = require('../../utils/validate')
 const papertrail = require('../../utils/papertrail')
 
 const router = express.Router()
-const config = yaml.parse(
-  fs.readFileSync(
-    path.resolve(__dirname, '../../config.yaml'),
-    'utf8')
-)
 
 // Papertrail has a very strict and low rate-limit!
 router.get('/',
