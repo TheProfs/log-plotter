@@ -10,7 +10,9 @@ that happen across separate, distributed services logging using [Papertrail][pt]
 We use it internally to debug pesky issues with no clear cause.
 
 <p align="center">
-  <img alt="Running time plot showing a suspected cause of high-frequency disconnections" src="images/demo.gif">
+  <img
+  alt="Running time plot showing a suspected cause of high-frequency disconnections" src="images/demo.gif"
+  style="box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);">
 </p>
 
 > In the above image we traced mass WebSocket disconnections,
