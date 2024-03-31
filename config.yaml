@@ -1,28 +1,16 @@
 ---
 apps:
-- name: bitpaper-ws
-  token: BITPAPER_WS_PAPERTRAIL_API_TOKEN
+- name: billing-app
+  token: <papertrail-app-token>
   events:
-  - query: Relocating dyno to a new server
-    color: cyan
+  - query: redis-connect-error
     size: 10
-  - query: cycling
+  - query: fetch-error
     size: 5
-    color: gray
-  - query: fetchSockets response
-    size: 2
-  - query: starting to up
-    size: 8
-    color: pink
-- name: bitpaper-api
-  token: BITPAPER_API_PAPERTRAIL_API_TOKEN
+    color: teal
+- name: invoicing-app
+  token: <papertrail-app-token>
   events:
-  - query: ping timeout
-    size: 2
+  - query: GET /invoices timeout
+    size: 1
     color: blue
-  - query: websocket error
-    size: 2
-    color: magenta
-  - query: transport close
-    size: 2
-    color: black
