@@ -5,14 +5,15 @@ apps:
   events:
   - query: Relocating dyno to a new server
     color: cyan
-    size: 8
-  - query: Process exited with status
-    size: 2
-  - query: SocketClosedUnexpectedlyError
     size: 10
+  - query: crashing
+    size: 5
     color: red
   - query: fetchSockets response
     size: 2
+  - query: starting to up
+    size: 8
+    color: pink
 - name: bitpaper-api
   token: BITPAPER_API_PAPERTRAIL_API_TOKEN
   events:
