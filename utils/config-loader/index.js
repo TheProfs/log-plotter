@@ -10,9 +10,9 @@ const config = yaml.parse(
     'utf8')
 )
 
-module.exports = config.apps.map(app => {
-  return {
-    ...app,
-    token: app.token.includes('_') ? process.env[app.token] : app.token
-  }
-})
+module.exports = {
+  apps: config.apps.map(app => ({
+    token: app.token.includes('_') ? process.env[app.token] : app.token,
+    ...app
+  }))
+}
