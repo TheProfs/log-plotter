@@ -33,9 +33,9 @@ $ git clone
 $ npm install
 ```
 
-## Declare log/events in config.json
+## Declare log/events in config.yaml
 
-Edit `config.json` to add the log message keywords you wish to visualise.   
+Edit `config.yaml` to add the log message keywords you wish to visualise.   
 
 Assuming you:
 
@@ -44,26 +44,25 @@ Assuming you:
 - `console.log('GET-invoice-timeout', err)` in another Papertrail app called
   `invoicing-service`.
 
-Just declare those 3 events and their apps in your `config.json`, like so:
+Declare those 3 events and the 2 apps they are logged in, in `config.yaml`:
 
-```json
-{
-  "apps": [
-    {
-      "name": "billing-service",
-      "token": "<papertrail-billing-service-api-token>",
-      "events": [
-        { "name": "redis-reconnect-error", "size": 10 },
-        { "name": "redis-error", "size": 6, "color": "red" }
-      ]
-    },
-    {
-      "name": "invoicing-service",
-      "token": "<papertrail-invoicing-service-api-token>",
-      "events": [{ "name": "GET-invoice-timeout", "size": 3, "color": "cyan" }]
-    }
-  ]
-}
+```yaml
+---
+apps:
+- name: billing-app
+  token: <papertrail-app-token>
+  events:
+  - query: redis-reconnect-error
+    size: 10
+  - query: a-log-i-logged-using-console.log!
+    size: 5
+    color: teal
+- name: invoicing-app
+  token: <papertrail-app-token>
+  events:
+  - query: GET invoice timeout
+    size: 1
+    color: blue
 ```
 
 Where:
@@ -85,6 +84,12 @@ $ npm run start-dev
 and visit `localhost:3000`.
 
 You should see those events plotted and you can navigate the graph.
+
+## Todo
+
+- [ ] Count objects in view
+- [ ] Server tests
+- [ ] UI tests
 
 ## Authors
 

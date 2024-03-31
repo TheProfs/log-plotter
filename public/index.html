@@ -4,69 +4,52 @@
     <title>Log Plotter</title>
 
     <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"></link>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@chgibb/css-spinners@2.2.1/css/spinners.min.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="public/styles.css">
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/throttle-debounce@5.0.0/umd/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
-    <script src="public/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="public/components/loading-spinner.js" defer></script>
+    <script src="public/components/chart-controls.js" defer></script>
+    <script src="public/components/time-chart.js" defer></script>
   </head>
 
   <body>
-    <div class="controls" title="Drag to reposition">
-      <ul>
-        <li> <span> Click + Drag </span> to time travel </li>
-        <li> <span> Mouse scroll up/down </span> to zoom in</li>
-        <li> <span> Click Point </span> to log event </li>
-        <li> <span> Click Legend Items</span> to hide them </li>
-      </ul>
-      <button
-        id="reset-btn"
-        class="hidden"
-        title="Reset to initial state"
-        type="button">
-          Reset
-      </button>
-      <p id="period" class="hidden">
-        Viewing dates:
-        <strong id="start-lbl"></strong>
-          -
-        <strong id="end-lbl"></strong>
-      </p>
-      <span>
-    </div>
-    <script> $('.controls').draggable({ containment: 'document' }) </script>
-
-    <div id="loading" class="loading-indicator-container hidden">
-      <h5> Fetching data for time period </h5>
-      <div class="loading-indicator wobblebar-loader"> Loading... </div>
-    </div>
-
-    <div class="chart-container">
-      <canvas id="chart"></canvas>
-    </div>
+    <chart-controls></chart-controls>
+    <loading-spinner id="spinner"></loading-spinner>
+    <time-chart></time-chart>
   </body>
 
   <script>
     'use strict'
 
-    toastr.options.timeOut = 1000
+    window.addEventListener('load', e => {
+      const loadingSpinner = document.querySelector('loading-spinner')
+      const chartControls = document.querySelector('chart-controls')
+      const chart = document.querySelector('time-chart')
 
-    window.onload = () => {
-      plotter.create().init()
+      chartControls.addEventListener('request-reset', e => chart.reset())
 
-      document.querySelector('#reset-btn').addEventListener('click', e => {
-        plotter.reset() && e.target.classList.toggle('hidden')
-      })
-    }
+      chart.addEventListener('chart-updated', e =>
+        chartControls.updateRangeLabels(e.detail))
+
+      chart.addEventListener('point-clicked', e =>
+        console.info(e.detail.item) && Toastify({
+          text: 'Log event logged in console',
+          className: 'toast-info'
+        }).showToast()
+      )
+
+      chart.addEventListener('xhr-started', e => loadingSpinner.show())
+      chart.addEventListener('xhr-ended', e => loadingSpinner.hide())
+      chart.addEventListener('xhr-error', e =>
+        Toastify({
+          text: e.detail.err,
+          className: 'toast-error'
+        }).showToast()
+      )
+
+      chart.create().init()
+    })
   </script>
 </html>
