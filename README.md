@@ -75,8 +75,8 @@ Where:
 | `event.color` | String:Hex color | Optional.  Defaults to random. | Use this color when painting the time plot point. |
 | `event.size` | Number | Required | Use this radius for the time plot point. |
 
-### Run the visualiser
 
+### Run the visualiser
 
 ```bash
 $ npm run start-dev
