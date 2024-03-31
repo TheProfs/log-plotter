@@ -20,8 +20,9 @@ the process to another server.
 > This movement required more than 60 seconds which was more than our
 `ping-timeouts`, hence the disconnections.
 
-> The cyan circle was zeroed-in as the culprit of the mass disconnections, as it
-was repeatedly & reliable seen happening immediately before them.
+> The cyan point (representing a console.log of a server cycling message)
+was zeroed-in as the culprit of the mass disconnections, as it was repeatedly &
+reliably seen happening immediately before them.
 
 
 ## Install
