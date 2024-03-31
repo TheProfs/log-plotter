@@ -135,7 +135,7 @@ class TimeChart extends HTMLElement {
                       this.fetchDatasetForXAxisBounds()
                     })
 
-                //this._zoomDebounce()
+                this._zoomDebounce()
               }
             }
           }
