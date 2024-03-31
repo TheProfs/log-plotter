@@ -6,9 +6,9 @@ apps:
   - query: Relocating dyno to a new server
     color: cyan
     size: 10
-  - query: crashing
+  - query: cycling
     size: 5
-    color: red
+    color: gray
   - query: fetchSockets response
     size: 2
   - query: starting to up
