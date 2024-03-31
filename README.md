@@ -3,9 +3,9 @@
 Visualise the frequency & timing of `console.logs` or exceptions
 that happen across separate, distributed services logging using [Papertrail][pt]
 
-- Doesn't use a database or a deployment.  
-- It just scours PT logs for specific events/logs and plots their frequency
-  on a navigable time plot.
+- Doesn't need a database or a deployment.  
+- It simply scours Papertrail logs for specific events/logs and plots their
+  frequency on a navigable time plot.
 
 Use it to debug pesky issues with no clear cause.
 
@@ -40,16 +40,17 @@ Edit `config.yaml` to add the log message keywords you wish to visualise.
 
 Assuming you have 2 apps running on Heroku, with the Papertrail add-on attached:
 
-- Invoicing App, called **billing-app**.
-  - You `console.log('redis-connect-error', err)`
-  - You `console.log('fetch-error', err)`
-- Billing App, called `invoicing-app`.
-  - You `console.log('GET /invoices timeout', err)`
+- An app called **billing-app**, where you:
+  - `console.log('redis-connect-error', err)`
+  - `console.log('fetch-error', err)`
+- Another app, called **invoicing app**, where you:
+  - `console.log('GET /invoices timeout', err)`
 
 You want to see when and how many times those `console.log` calls occured in
 a time period.   
 
-Declare those 2 apps and the events you're interested in, in `config.yaml`:
+Declare those 2 apps, events you're interested in and how to plot them in
+`config.yaml`:
 
 ```yaml
 ---
@@ -70,21 +71,18 @@ apps:
     color: blue
 ```
 
-App parameters:
+#### App parameters:
 
 | Event | Type | Required? | Description |
 |---|---|---|---|
 | `app.name` | String | Required | Name of the Papertrail app that logs this log/event. |
 | `app.token` | String | Required | Papertrail API token for that app. |
-| `event.name` | String | Required | A subset of the string you `console.log()`.    If you log `console.log(redis-socket-error)`,  you can just declare `"socket-error" here and it will still be picked up. |
-| `event.color` | String:Hex color | Optional.  Defaults to random. | Use this color when painting the time plot point. |
-| `event.size` | Number | Required | Use this radius for the time plot point. |
 
-Event
+#### Event parameters:
 
 | Event | Type | Required? | Description |
 |---|---|---|---|
-| `event.name` | String | Required | A subset of the string you `console.log()`.    If you log `console.log(redis-socket-error)`,  you can just declare `"socket-error" here and it will still be picked up. |
+| `event.query` | String | Required | A subset of the string you `console.log()`.    If you log `console.log(redis-socket-error)`,  you can just declare `"socket-error"` here and it will still be picked up. |
 | `event.color` | String:Hex color | Optional.  Defaults to random. | Use this color when painting the time plot point. |
 | `event.size` | Number | Required | Use this radius for the time plot point. |
 
