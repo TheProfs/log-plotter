@@ -40,9 +40,9 @@ Edit `config.yaml` to add the log message keywords you wish to visualise.
 
 Assuming you:
 
-- `console.log('redis-reconnect-error', err)` & `console.log('redis-error')`
-   in a Papertrail app called `billing-service`.
-- `console.log('GET-invoice-timeout', err)` in another Papertrail app called
+- `console.log('redis-connect-error', err)` & `console.log('fetch-error')`
+   in a Papertrail app, called `billing-service`.
+- `console.log('GET /invoices timeout', err)` in another Papertrail app, called
   `invoicing-service`.
 
 Declare those 3 events and the 2 apps they are logged in, in `config.yaml`:
@@ -53,15 +53,15 @@ apps:
 - name: billing-app
   token: <papertrail-app-token>
   events:
-  - query: redis-reconnect-error
+  - query: redis-connect-error
     size: 10
-  - query: a-log-i-logged-using-console.log!
+  - query: fetch-error
     size: 5
     color: teal
 - name: invoicing-app
   token: <papertrail-app-token>
   events:
-  - query: GET invoice timeout
+  - query: GET /invoices timeout
     size: 1
     color: blue
 ```
