@@ -12,7 +12,7 @@ const config = yaml.parse(
 
 module.exports = {
   apps: config.apps.map(app => ({
-    token: app.token.includes('_') ? process.env[app.token] : app.token,
-    ...app
+    ...app,
+    token: app.token.includes('_') ? process.env[app.token] : app.token
   }))
 }
