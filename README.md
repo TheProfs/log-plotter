@@ -7,10 +7,10 @@ that happen across separate, distributed services logging using [Papertrail][pt]
 - It simply scours Papertrail logs for specific events/logs and plots their
   frequency on a navigable time plot.
 
-Use it to debug pesky issues with no clear cause.
+We use it internally to debug pesky issues with no clear cause.
 
 <p align="center">
-  <img alt="Running time plot showing a suspected cause of high-frequency disconnections" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTU1NjR4czUwaTY4ZWllNjA1YmRxM2w2andwdWF5eWM5bXNjZ2Z2cCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kbpkqUhZyjDptIYfAc/source.gif">
+  <img alt="Running time plot showing a suspected cause of high-frequency disconnections" src="images/demo.gif">
 </p>
 
 > In the above image we traced mass WebSocket disconnections,
