@@ -1,16 +1,30 @@
 ---
 apps:
-  - name: billing-app
-    token: <papertrail-app-token>
-    events:
-      - query: redis-connect-error
-        size: 10
-      - query: fetch-error
-        size: 5
-        color: teal
-  - name: invoicing-app
-    token: <papertrail-app-token>
-    events:
-      - query: GET /invoices timeout
-        size: 1
-        color: blue
+- name: bitpaper-ws
+  token: BITPAPER_WS_PAPERTRAIL_API_TOKEN
+  events:
+  - query: uncaught-exception
+    size: 10
+  - query: subClient-error
+    size: 6
+  - query: pubClient-error
+    size: 5
+  - query: Relocating dyno to a new server
+    color: cyan
+    size: 8
+  - query: Process exited with status
+    size: 2
+  - query: SocketClosedUnexpectedlyError
+    size: 10
+    color: red
+  - query: fetchSockets response
+    size: 2
+  - query: starting to up
+    size: 10
+    color: teal
+- name: bitpaper-api
+  token: BITPAPER_API_PAPERTRAIL_API_TOKEN
+  events:
+  - query: ping timeout
+    size: 1
+    color: blue
