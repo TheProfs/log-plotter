@@ -21,7 +21,6 @@
     "hash-index": "^3.0.0",
     "joi": "^17.12.2",
     "node-fetch": "^2.7.0",
-    "promise-throttle": "^1.1.2",
     "uniqolor": "^1.1.1",
     "yaml": "^2.4.1"
   },

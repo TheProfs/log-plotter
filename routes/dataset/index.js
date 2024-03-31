@@ -7,7 +7,6 @@ const express = require('express')
 const rateLimit = require('express-rate-limit')
 const uniqolor = require('uniqolor')
 const hasher = require('hash-index')
-const PromiseThrottle = require('promise-throttle')
 
 const validate = require('../../utils/validate')
 const papertrail = require('../../utils/papertrail')
@@ -52,11 +51,9 @@ router.get('/',
       }))
     }, [])
 
-    res.json(
-      await (new PromiseThrottle({ requestsPerSecond: 5 }))
-        .addAll(searches.map(search => () => search))
-    )
+    return res.json(await Promise.all(searches))
   } catch (err) {
+    console.log(err)
     next(err)
   }
 })
