@@ -6,7 +6,8 @@ class TimeChart extends HTMLElement {
 
     this.chart = null
     this.canvas = null
-    this.interactionDebounceDuration = 1000
+    this.interactionDebounceDuration = 2000
+    this._updateForVisibleBoundsDebounced = null // populated on .create()
   }
 
   connectedCallback() {
@@ -67,12 +68,17 @@ class TimeChart extends HTMLElement {
 
     start.setHours(start.getHours() - 12)
 
-    this.fetchDatasetForRange({ start, end: new Date() })
+    this.update({ start, end: new Date() })
 
     return this
   }
 
   create() {
+    this._updateForVisibleBoundsDebounced =
+      this._updateForVisibleBoundsDebounced ||
+        throttleDebounce.debounce(this.interactionDebounceDuration, () =>
+          this.updateForVisibleBounds())
+
     this.chart = new Chart(this.canvas.getContext('2d'), {
       type: 'line',
 
@@ -109,16 +115,7 @@ class TimeChart extends HTMLElement {
             pan: {
               mode: 'x',
               enabled: true,
-              onPanComplete: ({ chart }) => {
-                this._panDebounce = this._panDebounce ||
-                  throttleDebounce.debounce(
-                    this.interactionDebounceDuration,
-                    () => {
-                      this.fetchDatasetForXAxisBounds()
-                    })
-
-                this._panDebounce()
-              }
+              onPanComplete: () => this._updateForVisibleBoundsDebounced()
             },
 
             zoom: {
@@ -127,16 +124,7 @@ class TimeChart extends HTMLElement {
                 speed: 0.075
               },
               mode: 'x',
-              onZoomComplete: ({ chart }) => {
-                this._zoomDebounce = this._zoomDebounce ||
-                  throttleDebounce.debounce(
-                    this.interactionDebounceDuration,
-                    () => {
-                      this.fetchDatasetForXAxisBounds()
-                    })
-
-                this._zoomDebounce()
-              }
+              onZoomComplete: () => this._updateForVisibleBoundsDebounced()
             }
           }
         },
@@ -158,7 +146,7 @@ class TimeChart extends HTMLElement {
     return this
   }
 
-  fetchDatasetForXAxisBounds() {
+  updateForVisibleBounds() {
     const ticks = this.chart.scales.x.ticks
 
     if (!ticks.length)
@@ -167,13 +155,13 @@ class TimeChart extends HTMLElement {
     const first = ticks[0].value
     const last = ticks[ticks.length - 1].value
 
-    return this.fetchDatasetForRange({
+    return this.update({
       start: new Date(first),
       end: new Date(last)
     })
   }
 
-  async fetchDatasetForRange({ start, end }) {
+  async update({ start, end }) {
     try {
       this.dispatchEvent(new CustomEvent('xhr-started'))
 

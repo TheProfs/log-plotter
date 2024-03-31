@@ -47,7 +47,7 @@ class LoadingSpinner extends HTMLElement {
     container.classList.add('loading-indicator-container', 'hidden')
 
     const header = document.createElement('h5')
-    header.textContent = 'Fetching data for time period'
+    header.textContent = 'Fetching latest data'
 
     const spinner = document.createElement('div')
     spinner.classList.add('loading-indicator', 'wobblebar-loader')
