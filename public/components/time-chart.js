@@ -184,7 +184,7 @@ class TimeChart extends HTMLElement {
         }), {
         headers: { 'Accept': 'application/json' }
       })
-      .then(r => r.ok ? r.json() : r.text().then(r => { throw r }))
+      .then(r => r.ok ? r.json() : r.text().then(text => { throw text }))
 
       this.chart.update(0)
 
@@ -195,9 +195,7 @@ class TimeChart extends HTMLElement {
         }
       }))
     } catch (err) {
-      this.dispatchEvent(new CustomEvent('xhr-error', {
-        detail: err
-      }))
+      this.dispatchEvent(new CustomEvent('xhr-error', { detail: { err } }))
 
       console.error(err)
     } finally {

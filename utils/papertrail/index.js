@@ -2,6 +2,8 @@
 
 const fetch = require('node-fetch')
 
+// Papertrail has a very strict and low rate-limit!
+// See: https://www.papertrail.com/help/search-api/
 module.exports = {
   search: ({ token, start, end, query }) => {
     const q = new URLSearchParams({
@@ -11,6 +13,7 @@ module.exports = {
       limit: 10000
     })
 
+    // @BUG this crashes the process on regular HTTP errors (i.e 404)
     return fetch('https://papertrailapp.com/api/v1/events/search.json?' + q, {
       headers: { 'X-Papertrail-Token': token }
     })

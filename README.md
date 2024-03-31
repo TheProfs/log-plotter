@@ -102,6 +102,7 @@ You should see those events plotted and you can navigate the graph.
 
 ## Todo
 
+- [ ] Fix `routes/utiles/papertrail.js` fetch bug crashing the process
 - [ ] Count objects in view
 - [ ] Server tests
 - [ ] UI tests
