@@ -82,7 +82,8 @@ apps:
 
 > [!TIP]
 > `app.token` will use an environmental variable if there's underscores in the
-> token. i.e setting it to `INVOICING_APP_TOKEN` will use the environmental
+> token.  
+> i.e setting it to `INVOICING_APP_TOKEN` will use the environmental
 > variable value of the same name
 
 #### Event parameters:
@@ -95,7 +96,8 @@ apps:
 
 > [!TIP]
 > `app.query` doesn't have to perfectly match the log itself, just a part of
-> it is enough. i.e Setting it to `hello-w` will render logs that log
+> it is enough.  
+> i.e Setting it to `hello-w` will render logs that log
 > `console.log('hello-world')`
 
 
