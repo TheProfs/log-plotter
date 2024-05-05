@@ -6,7 +6,7 @@ class TimeChart extends HTMLElement {
 
     this.chart = null
     this.canvas = null
-    this.interactionDebounceDuration = 2000
+    this.interactionDebounceDuration = 300
     this._updateForVisibleBoundsDebounced = null // populated on .create()
   }
 
@@ -96,7 +96,7 @@ class TimeChart extends HTMLElement {
         scales: {
           x: {
             type: 'time',
-            time: { unit: 'minute' }
+            time: { unit: 'second' }
           },
           y: { display: false }
         },
@@ -106,7 +106,7 @@ class TimeChart extends HTMLElement {
           tooltip: {
             callbacks: {
               label: context => {
-                return context.dataset.label
+                return context.raw.label || context.dataset.label
               }
             }
           },

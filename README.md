@@ -47,68 +47,24 @@ $ npm install
 
 ## Declare log/events in config.yaml
 
-Edit `config.yaml` to add the log message keywords you wish to visualise.   
-
-Assuming you have 2 apps running on Heroku, with the Papertrail add-on attached:
-
-- An app called **billing-app**, where you:
-  - `console.log('redis-connect-error', err)`
-  - `console.log('fetch-error', err)`
-- Another app, called **invoicing app**, where you:
-  - `console.log('GET /invoices timeout', err)`
-
-You want to see when and how many times those `console.log` calls occured in
-a time period.   
-
-Declare those 2 apps, events you're interested in and how to plot them in
-`config.yaml`:
-
-```yaml
----
-apps:
-- name: billing-app
-  token: <papertrail-app-token>
-  events:
-  - query: redis-connect-error
-    size: 10
-  - query: fetch-error
-    size: 5
-    color: teal
-- name: invoicing-app
-  token: <papertrail-app-token>
-  events:
-  - query: GET /invoices timeout
-    size: 1
-    color: blue
-```
-
-#### App parameters:
-
-| Event | Type | Required? | Description |
-|---|---|---|---|
-| `app.name` | String | Required | Name of the Papertrail app that logs this log/event. |
-| `app.token` | String | Required | Papertrail API token of this app |
-
-> [!TIP]
-> `app.token` will use an environmental variable if there's underscores in the
-> token. i.e setting it to `INVOICING_APP_TOKEN` will use the environmental
-> variable value of the same name
-
-#### Event parameters:
-
-| Event | Type | Required? | Description |
-|---|---|---|---|
-| `event.query` | String | Required | A subset of the string you `console.log()`.    If you log `console.log(redis-socket-error)`,  you can just declare `"socket-error"` here and it will still be picked up. |
-| `event.color` | String:Hex color | Optional.  Defaults to random. | Use this color when painting the time plot point. |
-| `event.size` | Number | Required | Use this radius for the time plot point. |
-
-> [!TIP]
-> `app.query` doesn't have to perfectly match the log itself, just a part of
-> it is enough. i.e Setting it to `hello-w` will render logs that log
-> `console.log('hello-world')`
-
+//@Todo
 
 ### Run the visualiser
+
+Add a Papertrail API Token in root `.env.local` file:
+
+`.env.local`:
+
+```sh
+PAPERTRAIL_TOKEN=xxx # Replace xxx with Papertrail Token
+```
+
+then:
+
+```bash
+# Download all the logs for today:
+$ npm run download-logs
+```
 
 ```bash
 $ npm run start-dev
