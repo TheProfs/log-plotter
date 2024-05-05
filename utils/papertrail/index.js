@@ -1,5 +1,6 @@
 'use strict'
 
+const { setTimeout } = require('node:timers/promises')
 const fs = require('node:fs/promises')
 const path = require('node:path')
 const process = require('node:process')
@@ -8,6 +9,7 @@ const download = require('./download-logs.js')
 let logs
 
 ;(async () => {
+  await setTimeout(100)
   await download()
 
   logs = await fs.readFile(

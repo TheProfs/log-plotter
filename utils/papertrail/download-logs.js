@@ -1,7 +1,6 @@
 'use strict'
 
 const fs = require('node:fs/promises')
-const fetch = require('node-fetch')
 const path = require('path')
 const process = require('node:process')
 
