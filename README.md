@@ -19,7 +19,7 @@ It attempts to do so by simply plotting each event on a graph.
   style="box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);">
 </p>
 
-### A real-life example:
+### A real-life example
 
 > In the above image we traced mass WebSocket disconnections,
 seen next to the cyan point, to a simple infrastructure platform rule that moves
@@ -32,6 +32,9 @@ the process to another server.
 was zeroed-in as the culprit of the mass disconnections, as it was repeatedly &
 reliably seen happening immediately before them.
 
+We process half a million events each day; even filtering on errors produces
+a mile long paper trail of logs which makes it impossible to get even the
+most basic overview of a situation, hence this app.
 
 ## Install
 
