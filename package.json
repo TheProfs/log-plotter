@@ -4,7 +4,7 @@
   "description": "Debug bitpaper-ws socket.io disconnect errors",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test test/*.spec.js",
     "start-dev": "node --env-file=.env.local --no-warnings --watch app.js",
     "postinstall": "printf 'PAPERTRAIL_TOKEN=XXX\n' > .env.local",
     "start": "node app.js"

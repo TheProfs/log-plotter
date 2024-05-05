@@ -36,6 +36,12 @@ We process half a million events each day; even filtering on errors produces
 a mile long paper trail of logs which makes it impossible to get even the
 most basic overview of a situation, hence this app.
 
+## Test
+
+```sh
+$ npm test
+```
+
 ## Install
 
 Run:
