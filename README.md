@@ -3,17 +3,23 @@
 Visualise the frequency & timing of `console.logs` or exceptions
 that happen across separate, distributed services logging using [Papertrail][pt]
 
-- Doesn't need a database or a deployment.  
-- It simply scours Papertrail logs for specific events/logs and plots their
-  frequency on a navigable time plot.
+It essentially attempts to answer the following question:
 
-We use it internally to debug pesky issues with no clear cause.
+> Which statistically significant (high-frequency) event in some Service, ***precedes*** another, problematic event in another Service?
+
+It attempts to do so by simply plotting each event on a graph.
+
+- Doesn't need a database or a deployment.  
+- It just scours Papertrail logs for specific events/logs and plots their
+  frequency on a navigable time plot.
 
 <p align="center">
   <img
   alt="Running time plot showing a suspected cause of high-frequency disconnections" src="images/demo.gif"
   style="box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);">
 </p>
+
+### A real-life example:
 
 > In the above image we traced mass WebSocket disconnections,
 seen next to the cyan point, to a simple infrastructure platform rule that moves
@@ -82,8 +88,7 @@ apps:
 
 > [!TIP]
 > `app.token` will use an environmental variable if there's underscores in the
-> token.  
-> i.e setting it to `INVOICING_APP_TOKEN` will use the environmental
+> token. i.e setting it to `INVOICING_APP_TOKEN` will use the environmental
 > variable value of the same name
 
 #### Event parameters:
@@ -96,8 +101,7 @@ apps:
 
 > [!TIP]
 > `app.query` doesn't have to perfectly match the log itself, just a part of
-> it is enough.  
-> i.e Setting it to `hello-w` will render logs that log
+> it is enough. i.e Setting it to `hello-w` will render logs that log
 > `console.log('hello-world')`
 
 
@@ -116,9 +120,12 @@ You should see those events plotted and you can navigate the graph.
 - [ ] Count objects in view
 - [ ] Server tests
 - [ ] UI tests
+- [ ] [K-means cluster][kmeans] the events, infer associations automatically
+
 
 ## Authors
 
 - [@nicholaswmin](https://github.com/nicholaswmin)
 
 [pt]: https://www.papertrail.com/
+[kmeans]: https://en.wikipedia.org/wiki/K-means_clustering
