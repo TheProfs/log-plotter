@@ -1,28 +1,34 @@
 'use strict'
 
-const fetch = require('node-fetch')
+const { setTimeout } = require('node:timers/promises')
+const fs = require('node:fs/promises')
+const path = require('node:path')
+const process = require('node:process')
+const download = require('./download-logs.js')
 
+let logs
+
+;(async () => {
+  await setTimeout(100)
+  await download()
+
+  logs = await fs.readFile(
+    path.resolve(process.cwd(), 'papertrail-logs.json'),
+    { encoding: 'utf8' }
+  ).then(logs => logs ? JSON.parse(logs) : null)
+})()
+
+const search = async ({ start, end }) => {
+  if (!logs)
+    throw new Error('Logs are not ready yet, please wait')
+
+  return logs.filter(log => {
+    return log.generated_at > start && log.generated_at < end
+  })
+}
 // Papertrail has a very strict and low rate-limit!
 // See: https://www.papertrail.com/help/search-api/
+
 module.exports = {
-  search: ({ token, start, end, query }) => {
-    const q = new URLSearchParams({
-      q: query,
-      min_time: parseInt(start / 1000),
-      max_time: parseInt(end / 1000),
-      limit: 10000
-    })
-
-    // @BUG this crashes the process on regular HTTP errors (i.e 404)
-    return fetch('https://papertrailapp.com/api/v1/events/search.json?' + q, {
-      headers: { 'X-Papertrail-Token': token }
-    })
-    .then(res => {
-      if (!res.ok)
-        throw res
-
-      return res.json()
-    })
-    .then(res => res.events)
-  }
+  search
 }
