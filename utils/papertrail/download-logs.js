@@ -60,7 +60,7 @@ module.exports = async () => {
 
   const now = new Date()
   const start = new Date()
-  start.setHours(0,0,0,0)
+  start.setHours(start.getHours() - 18)
 
   const s = `${start.toLocaleDateString()} - ${start.toLocaleTimeString()}`
   const n = `${now.toLocaleDateString()} - ${now.toLocaleTimeString()}`

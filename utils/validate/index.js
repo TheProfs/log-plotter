@@ -16,6 +16,7 @@ module.exports = {
           .timestamp()
           .required()
           .custom(val => new Date(val).getTime()),
+        query: Joi.string().allow('').optional()
       })
     }
   },

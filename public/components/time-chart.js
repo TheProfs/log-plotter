@@ -96,7 +96,7 @@ class TimeChart extends HTMLElement {
         scales: {
           x: {
             type: 'time',
-            time: { unit: 'second' }
+            time: { unit: 'minute' }
           },
           y: { display: false }
         },
@@ -146,6 +146,12 @@ class TimeChart extends HTMLElement {
     return this
   }
 
+  setQuery({ query }) {
+    this.query = query
+
+    return this
+  }
+
   updateForVisibleBounds() {
     const ticks = this.chart.scales.x.ticks
 
@@ -167,6 +173,7 @@ class TimeChart extends HTMLElement {
 
       this.chart.data.datasets = await fetch(
         '/datasets?' + new URLSearchParams({
+          query: this.query || '',
           start: start.getTime(),
           end: end.getTime()
         }), {

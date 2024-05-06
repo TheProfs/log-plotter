@@ -11,7 +11,7 @@ class ChartControls extends HTMLElement {
     const style = document.createElement('style');
     style.textContent = `
       .controls {
-        padding: 6px 18px;
+        padding: 24px 18px;
         background: rgba(0,0,0,0.7);
         cursor: move;
         z-index: 2;
@@ -56,9 +56,13 @@ class ChartControls extends HTMLElement {
           <strong id="end-lbl"></strong>
         </p>
         <span>
+
+        <input
+          id="search" type='text' placeholder="Search, ',' or '&'">
+        </input>
+        <button id="search-btn">Search</button>
     </div>
     `
-
     const scripts = [
       'https://code.jquery.com/jquery-3.7.1.min.js',
       'https://code.jquery.com/ui/1.13.2/jquery-ui.js'
@@ -80,12 +84,26 @@ class ChartControls extends HTMLElement {
         })
       }
 
-      $(this).draggable({ containment: 'document' })
+      //$(this).draggable({ containment: 'document' })
     })()
+
+    const search = () => {
+      this.dispatchEvent(new CustomEvent('request-search', {
+        detail: this.shadow.querySelector('#search').value
+      }))
+    }
 
     this.shadow.querySelector('#reset-btn')
       .addEventListener('click', e =>
         this.dispatchEvent(new CustomEvent('request-reset')))
+
+    this.shadow.querySelector('#search-btn')
+      .addEventListener('click', e => search())
+
+    this.shadow.querySelector('#search')
+      .addEventListener('keydown', e => {
+        if (e.key === 'Enter') search()
+      })
   }
 
   updateRangeLabels({ start, end }) {

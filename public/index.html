@@ -30,16 +30,24 @@
       const chart = document.querySelector('time-chart')
 
       chartControls.addEventListener('request-reset', e => chart.reset())
+      chartControls.addEventListener('request-search', e => {
+        chart.setQuery({ query: e.detail })
+        chart.updateForVisibleBounds()
+      })
 
       chart.addEventListener('chart-updated', e =>
         chartControls.updateRangeLabels(e.detail))
 
-      chart.addEventListener('point-clicked', e =>
-        console.info(e.detail.item) && Toastify({
-          text: 'Log event logged in console',
-          className: 'toast-info'
-        }).showToast()
-      )
+      chart.addEventListener('point-clicked', e => {
+        const id_user = e.detail.item.id_user
+
+        console.log('item', e.detail.item)
+
+        if (id_user) {
+          chart.setQuery({ query: id_user })
+          chart.updateForVisibleBounds()
+        }
+      })
 
       chart.addEventListener('xhr-started', e => loadingSpinner.show())
       chart.addEventListener('xhr-ended', e => loadingSpinner.hide())
